@@ -25,7 +25,7 @@ class SelectBuildVariantMatrixAction : AnAction() {
         if (dialog.showAndGet()) {
             // OK selected => Post variant selection back to Android Studio
             for (andModule in androidModules) {
-                dimensions.getSelectedVariantFor(andModule.moduleName)?.let {vari ->
+                dimensions.getTargetVariantFor(andModule.moduleName)?.let { vari ->
                     println("Found module ${andModule.moduleName}. Updating to variant $vari")
                     legacyUpdater.updateSelectedBuildVariant(project, andModule.moduleName, vari)
                 }

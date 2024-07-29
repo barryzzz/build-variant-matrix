@@ -63,6 +63,20 @@ class DimensionList {
         }
     }
 
+    /**
+     * get target variant
+     */
+    fun getTargetVariantFor(moduleName: String): String? {
+        val buildType =
+            dimensions.find { it.dimensionName == "buildType" }?.flavors?.find { it.isSelected }
+        val variant =
+            dimensions.find { it.dimensionName == "default" }?.flavors?.find { it.isSelected }
+        val target = "${variant?.title}${buildType?.title?.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }}"
+//        val target = "${variant?.title}${buildType?.title}"
+        println("${moduleName} target variant for $target")
+        return target
+    }
+
     /** Make a map of Module => Ordered List Of Dimensions, where order
      * matches what Android Studio lists when string concatenating
      */
