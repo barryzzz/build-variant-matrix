@@ -41,13 +41,12 @@ This is an open source project licensed under the Apache License v2.0.]]></descr
     <depends>com.intellij.modules.androidstudio</depends>
 
     <actions>
-        <action id="SelectBuildVariantMatrixAction"
-                class="com.nilsenlabs.flavormatrix.actions.SelectBuildVariantMatrixAction"
-                text="Select Build Variant by Matrix">
-            <add-to-group group-id="GradleProjectStructureActions"
-                          anchor="after"
-                          relative-to-action="SelectBuildVariant" />
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift x"/>
+        <action class="com.nilsenlabs.flavormatrix.actions.SelectBuildVariantMatrixAction"
+            id="SelectBuildVariantMatrixAction"
+            text="Select Build Variant by Matrix">
+            <add-to-group anchor="after" group-id="GradleProjectStructureActions"
+                relative-to-action="SelectBuildVariant" />
+            <keyboard-shortcut first-keystroke="ctrl shift x" keymap="$default" />
         </action>
     </actions>
 </idea-plugin>

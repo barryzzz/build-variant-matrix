@@ -12,7 +12,7 @@ plugins {
 }
 
 group 'com.nilsenlabs.flavormatrix'
-version '1.2.0'
+version '1.3.0'
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file("local.properties").newDataInputStream())
@@ -24,7 +24,7 @@ properties.load(project.rootProject.file("local.properties").newDataInputStream(
 //  plugins\properties\lib\platform-images.jar
 //  plugins\properties\lib\properties.jar
 //  plugins\smali\lib\smali.jar
-def defaultLocalStudioPath = 'd:/Program Files/Android Studio'
+def defaultLocalStudioPath = 'd:/Program Files/Android Studio Jellyfish'
 
 // Specify the path in your local.properties file as
 // localStudioPath=your/path/to/androidstudio
@@ -50,11 +50,11 @@ intellij {
 patchPluginXml {
     changeNotes = """
     <ul>
-      <li>1.3.0 Support for Android Studio Ladybug</li>
       <li>1.2.0 Support for Android Studio Giraffe and Hedgehog</li>
       <li>1.1.0 Support for Android Studio Electric Eel</li>
       <li>1.0.0 Support for Android Studio Chipmunk (RC2+)</li>
       <li>0.7.0 Support for Android studio Arctic Fox 2020.3.1</li>
+      <li>0.6.0 Support for Android 4.2</li>
     </ul>
     """
 }

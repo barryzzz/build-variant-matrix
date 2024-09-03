@@ -1,7 +1,6 @@
 package com.nilsenlabs.flavormatrix.actions
 
 import com.android.tools.idea.gradle.project.model.GradleAndroidModel
-import kotlin.streams.toList
 
 class DimensionList {
     companion object {
@@ -83,10 +82,10 @@ class DimensionList {
     fun createOrderedDimensionMaps(modules: List<GradleAndroidModel>) {
         for (module in modules) {
             val variantList = module.androidProject.basicVariants.stream().toList()
-             variantList.firstOrNull()?.let { firstVariant ->
+            variantList.firstOrNull()?.let { firstVariant ->
                 // The (first) named variant is always sorted the same way we need to sort the output
                 // e.g. "alphaBravoCharlie" means the dimension for "alpha" always must come first
-                val orderedFlavors = flavorsFromVariant(firstVariant.name)
+                val orderedFlavors = flavorsFromVariant(firstVariant)
                 val dimensionsForFlavor = mutableListOf<Dimension>()
                 moduleOrderedDimensionMap[module.moduleName] = dimensionsForFlavor
                 for (flavor in orderedFlavors) {

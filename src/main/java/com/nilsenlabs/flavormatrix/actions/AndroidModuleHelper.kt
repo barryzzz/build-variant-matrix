@@ -69,8 +69,8 @@ object AndroidModuleHelper {
 val Module.variantNames: Collection<String?>
     // Note: NDK part is untested
     get() = // NdkModuleModel.get(this)?.ndkModel?.allVariantAbis?.stream()?.map { it.displayName }?.toList() ?:
-        // val variantList = module.androidProject.basicVariants.stream().toList()
-        GradleAndroidModel.get(this)?.filteredVariantNames ?: emptyList()
+        GradleAndroidModel.get(this)?.variantNames ?: emptyList()
+//        GradleAndroidModel.get(this)?.filteredVariantNames ?: emptyList()
 
 val Module.variantItems: ModuleBuildVariant
     get() = ModuleBuildVariant(name, variantNames.asSequence().filterNotNull().sorted().toList())
