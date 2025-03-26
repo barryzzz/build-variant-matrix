@@ -85,7 +85,7 @@ class DimensionList {
             variantList.firstOrNull()?.let { firstVariant ->
                 // The (first) named variant is always sorted the same way we need to sort the output
                 // e.g. "alphaBravoCharlie" means the dimension for "alpha" always must come first
-                val orderedFlavors = flavorsFromVariant(firstVariant)
+                val orderedFlavors = flavorsFromVariant(firstVariant.name)
                 val dimensionsForFlavor = mutableListOf<Dimension>()
                 moduleOrderedDimensionMap[module.moduleName] = dimensionsForFlavor
                 for (flavor in orderedFlavors) {

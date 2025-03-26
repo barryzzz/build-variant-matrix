@@ -2,7 +2,6 @@ package com.nilsenlabs.flavormatrix.actions
 
 import com.android.tools.idea.gradle.project.model.GradleAndroidModel
 import com.intellij.openapi.module.Module
-import kotlin.streams.toList
 
 object AndroidModuleHelper {
     fun createDimensionTable(androidModules: List<GradleAndroidModel>, modules: Array<Module> ): DimensionList {
@@ -69,7 +68,7 @@ object AndroidModuleHelper {
 val Module.variantNames: Collection<String?>
     // Note: NDK part is untested
     get() = // NdkModuleModel.get(this)?.ndkModel?.allVariantAbis?.stream()?.map { it.displayName }?.toList() ?:
-        GradleAndroidModel.get(this)?.variantNames ?: emptyList()
+        GradleAndroidModel.get(this)?.buildTypeNames ?: emptyList()
 //        GradleAndroidModel.get(this)?.filteredVariantNames ?: emptyList()
 
 val Module.variantItems: ModuleBuildVariant

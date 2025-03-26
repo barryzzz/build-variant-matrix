@@ -37,11 +37,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.util.ThreeState;
 import com.intellij.util.containers.ContainerUtil;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
 import org.jetbrains.android.facet.AndroidFacet;
+import org.jetbrains.android.facet.AndroidFacetProperties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.plugins.gradle.util.GradleConstants;
@@ -68,7 +71,7 @@ public class LegacyBuildVariantUpdater {
             NdkModuleModel ndkModuleModel = getNdkModelIfItHasNativeVariantAbis(moduleToUpdate);
             NdkFacet ndkFacet = NdkFacet.getInstance(moduleToUpdate);
             if (ndkModuleModel != null && ndkFacet != null) {
-                VariantAbi newVariantAbi = resolveNewVariantAbi(ndkFacet, ndkModuleModel, selectedBuildVariant, (String)null);
+                VariantAbi newVariantAbi = resolveNewVariantAbi(ndkFacet, ndkModuleModel, selectedBuildVariant, (String) null);
                 if (newVariantAbi == null) {
                     logAndShowBuildVariantFailure(String.format("Cannot find suitable ABI for native module '%1$s'.", moduleName));
                     return false;
@@ -76,7 +79,7 @@ public class LegacyBuildVariantUpdater {
                     return this.updateSelectedVariant(project, moduleName, VariantAndAbi.fromVariantAbi(newVariantAbi));
                 }
             } else {
-                return this.updateSelectedVariant(project, moduleName, new VariantAndAbi(selectedBuildVariant, (String)null));
+                return this.updateSelectedVariant(project, moduleName, new VariantAndAbi(selectedBuildVariant, (String) null));
             }
         }
     }
@@ -126,8 +129,8 @@ public class LegacyBuildVariantUpdater {
             Runnable invokeVariantSelectionChangeListeners = () -> {
                 Iterator var1 = this.mySelectionChangeListeners.iterator();
 
-                while(var1.hasNext()) {
-                    BuildVariantSelectionChangeListener listener = (BuildVariantSelectionChangeListener)var1.next();
+                while (var1.hasNext()) {
+                    BuildVariantSelectionChangeListener listener = (BuildVariantSelectionChangeListener) var1.next();
                     listener.selectionChanged();
                 }
 
@@ -172,8 +175,10 @@ public class LegacyBuildVariantUpdater {
                         }
                     }
                 }
-
-                androidFacet.getProperties().SELECTED_BUILD_VARIANT = variantName;
+                androidFacet.getConfiguration().getState().SELECTED_BUILD_VARIANT = variantName;
+                AndroidFacetProperties androidFacetProperties = androidFacet.getProperties();
+                androidFacetProperties.SELECTED_BUILD_VARIANT = variantName;
+                System.out.println("Selected build variant updated: " + androidFacetProperties.SELECTED_BUILD_VARIANT);
                 return true;
             }
         }
@@ -242,7 +247,7 @@ public class LegacyBuildVariantUpdater {
             public void run() {
 
             }
-        }) );
+        }));
     }
 
     private static void setupCachedVariant(@NotNull Project project, @NotNull DataNode<ProjectData> variantData, @NotNull Runnable variantSelectionChangeListeners) {
