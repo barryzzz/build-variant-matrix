@@ -1,21 +1,22 @@
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
         maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
     }
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '2.0.0'
-    id 'org.jetbrains.intellij' version '1.13.3'
+    id 'org.jetbrains.kotlin.jvm' version '2.1.0'
+    id 'org.jetbrains.intellij.platform' version '2.2.1'
 }
 
 group 'com.nilsenlabs.flavormatrix'
-version '1.4.0'
+version '1.5.1'
 
 Properties properties = new Properties()
-properties.load(project.rootProject.file("local.properties").newDataInputStream())
+if (project.rootProject.file("local.properties").exists()) {
+    properties.load(project.rootProject.file("local.properties").newDataInputStream())
+}
 
 // Any developer must change this to his/her installation folder
 // of Android Studio of the targetIdeVersion for which to build for
@@ -24,59 +25,50 @@ properties.load(project.rootProject.file("local.properties").newDataInputStream(
 //  plugins\properties\lib\platform-images.jar
 //  plugins\properties\lib\properties.jar
 //  plugins\smali\lib\smali.jar
-def defaultLocalStudioPath = 'd:/Program Files/Android Studio Jellyfish'
+def defaultLocalStudioPath = '/home/sam/android-studio'
 
 // Specify the path in your local.properties file as
 // localStudioPath=your/path/to/androidstudio
 // Also see https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#intellij-extension-localpath
 def localStudioPath = properties.get("localStudioPath") ?: defaultLocalStudioPath
 
-// Below: Ladybug 2024.1.3 Canary 1
-def targetIdeVersion = "241.18034.62"
+// Below: Narwhal Feature Drop 2025.1.2 - Current version for compatibility
+def targetIdeVersion = "243.16718.32"
 
-intellij {
-    // Uncomment the two lines below and remove "localPath" if you want to build for a different version than the one locally installed
-    // version = targetIdeVersion
-    // type = 'IC'                // Community edition
-
-    plugins = ['android']
-    localPath = localStudioPath
-
-    // since-build and until-build is configured in plugin.xml.
-    // Update whenever rebuilt for later IDEA version.
-    updateSinceUntilBuild = false
-}
 
 patchPluginXml {
     changeNotes = """
     <ul>
-      <li>1.4.0 Support for Android Studio Meerkat</li>
+      <li>1.5.1 Support for Android Studio Narwhal (2025.1.2)</li>
+      <li>1.4.2 Publishing technicalities - no functionality change</li>
+      <li>1.4.0 Support for Android Studio Meerkat (from Canary 9)</li>
+      <li>1.3.0 Support for Android Studio Ladybug</li>
       <li>1.2.0 Support for Android Studio Giraffe and Hedgehog</li>
       <li>1.1.0 Support for Android Studio Electric Eel</li>
       <li>1.0.0 Support for Android Studio Chipmunk (RC2+)</li>
       <li>0.7.0 Support for Android studio Arctic Fox 2020.3.1</li>
-      <li>0.6.0 Support for Android 4.2</li>
     </ul>
     """
-}
-
-runIde {
-    def dirObj = project.getLayout().getProjectDirectory().dir(localStudioPath).asFile
-    ideDir.set(dirObj)
-}
-
-instrumentCode {
-    compilerVersion = targetIdeVersion
 }
 
 repositories {
     mavenLocal()
     mavenCentral()
-    jcenter()
+    intellijPlatform {
+        defaultRepositories()
+    }
     maven { url 'https://www.jetbrains.com/intellij-repository/releases' }
 }
 
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation "org.mockito:mockito-core:2.+"
+    intellijPlatform {
+        local(localStudioPath) // Use local Android Studio installation
+        //androidStudio("$targetIdeVersion") // Narwhal Feature Drop 2025.1.2
+        bundledPlugin('com.intellij.gradle')
+        bundledPlugin('org.jetbrains.plugins.gradle')
+        plugin("org.jetbrains.android:$targetIdeVersion")
+        jetbrainsRuntime()
+    }
 }
