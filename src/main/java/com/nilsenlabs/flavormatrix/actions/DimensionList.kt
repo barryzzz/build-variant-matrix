@@ -55,6 +55,20 @@ class DimensionList {
         }
     }
 
+    /**
+     * get target variant
+     */
+    fun getTargetVariantFor(moduleName: String): String? {
+        val buildType =
+            dimensions.find { it.dimensionName == "buildType" }?.flavors?.find { it.isSelected }
+        val variant =
+            dimensions.find { it.dimensionName == "default" }?.flavors?.find { it.isSelected }
+        val target = "${variant?.title}${buildType?.title?.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }}"
+//        val target = "${variant?.title}${buildType?.title}"
+        println("${moduleName} target variant for $target")
+        return target
+    }
+
     /** Generates a selectable variant string for the given module based on the selected items
      * Enhanced for complex multi-dimension scenarios
      */

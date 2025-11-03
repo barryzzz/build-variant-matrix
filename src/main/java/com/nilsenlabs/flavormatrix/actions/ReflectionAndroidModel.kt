@@ -17,9 +17,9 @@ object ReflectionAndroidModel {
             // find static get(Module) method
             getMethod = modelClass?.methods?.firstOrNull { m ->
                 m.name == "get" &&
-                m.parameterCount == 1 &&
-                m.parameterTypes[0].name == Module::class.java.name &&
-                java.lang.reflect.Modifier.isStatic(m.modifiers)
+                        m.parameterCount == 1 &&
+                        m.parameterTypes[0].name == Module::class.java.name &&
+                        java.lang.reflect.Modifier.isStatic(m.modifiers)
             }
 
             if (getMethod != null) {

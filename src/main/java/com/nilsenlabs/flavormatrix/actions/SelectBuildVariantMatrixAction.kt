@@ -124,10 +124,10 @@ class SelectBuildVariantMatrixAction : AnAction() {
                     val andModule = modulePair.key ?: continue // it being null should not happen
                     try {
                         val moduleName = ReflectionAndroidModel.getModuleName(andModule) ?: continue
-
-                        dimensions.getSelectedVariantFor(moduleName)?.let { vari ->
-                            println("选择：${moduleName} ${vari}")
-//                            getLog().info("Module: $moduleName. Updating to variant $vari")
+                        //替换查找维度实现
+                        val find = dimensions.getTargetVariantFor(moduleName)
+                        find?.let { vari ->
+                            getLog().info("Module: $moduleName. Updating to variant $vari")
                             legacyUpdater.updateSelectedBuildVariant(project, modulePair.value, vari)
                         }
                     } catch (e: Exception) {
